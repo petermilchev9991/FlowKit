@@ -1,0 +1,207 @@
+/*
+ * Layer order matters: Tailwind's reset (base) sits below Workflow Builder's
+ * styles (ui.base, ui.component), and Tailwind utilities sit above everything,
+ * so the editor keeps its look and your utility classes always win.
+ */
+@layer theme, base, ui.base, ui.component, components, utilities;
+
+@import 'tailwindcss';
+@import '@fontsource-variable/schibsted-grotesk';
+@import '@fontsource-variable/jetbrains-mono';
+
+/*
+ * Dark mode follows the `data-theme` attribute on <html>, the same attribute
+ * the Workflow Builder editor uses, so the app and the editor always match.
+ */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/*
+ * Brand tokens. Rebrand the whole app by changing these values.
+ *   canvas   - page background, matches the editor canvas
+ *   ink      - text color
+ *   cobalt   - primary actions, links, active connections
+ *   mint     - success
+ *   amber    - running / in progress
+ *
+ * Semantic tokens below map them to surfaces. `inverse` is the contrasting
+ * card (the highlighted pricing plan), `band` the full-width contrast sections,
+ * `night` the canvas behind the hero diagram, which always contrasts with the
+ * page: dark on the light theme, light on the dark theme.
+ */
+:root {
+  --brand-canvas: #f4f5f8;
+  --brand-ink: #1b2233;
+  --brand-cobalt: #3355ff;
+  --brand-mint: #11a383;
+  --brand-amber: #e99a1f;
+  --brand-line: #dde1e8;
+
+  --background: var(--brand-canvas);
+  --foreground: var(--brand-ink);
+  --card: #ffffff;
+  --card-foreground: var(--brand-ink);
+  --primary: var(--brand-cobalt);
+  --primary-foreground: #ffffff;
+  --secondary: #e8eaf0;
+  --secondary-foreground: var(--brand-ink);
+  --muted: #eceef3;
+  --muted-foreground: #5d6476;
+  --accent: #e9edff;
+  --accent-foreground: #1f3bd6;
+  --destructive: #d93a3a;
+  --border: var(--brand-line);
+  --input: var(--brand-line);
+  --ring: var(--brand-cobalt);
+  --success-foreground: #0b7a61;
+  --inverse: var(--brand-ink);
+  --inverse-foreground: #f4f5f8;
+  --inverse-muted: rgb(244 245 248 / 0.68);
+  --band: var(--brand-ink);
+  --band-foreground: #eef0f5;
+  --band-muted: #a3abbd;
+  --band-line: #2c3548;
+  --night: #121827;
+  --night-line: #263048;
+  --night-block: #1c2436;
+  --night-text: #eef0f5;
+  --night-muted: #8f98ad;
+  --night-tile: #3a4560;
+  --night-edge: #3d4864;
+  --night-pulse: #7d95ff;
+  --night-skip: #4a5570;
+  --night-shadow: rgba(18, 24, 39, 0.45);
+  --radius: 0.5rem;
+
+  /* Workflow Builder editor theming */
+  --wb-public-font-family: 'Schibsted Grotesk Variable', system-ui, sans-serif;
+  --wb-public-font-family-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+}
+
+[data-theme='dark'] {
+  --brand-canvas: #0e131e;
+  --brand-ink: #e6e9f0;
+  --brand-cobalt: #5272ff;
+  --brand-mint: #2cc39f;
+  --brand-line: #252e42;
+
+  --card: #151b29;
+  --card-foreground: var(--brand-ink);
+  --primary-foreground: #ffffff;
+  --secondary: #1f2738;
+  --secondary-foreground: var(--brand-ink);
+  --muted: #1b2232;
+  --muted-foreground: #98a1b3;
+  --accent: #1c2650;
+  --accent-foreground: #aebcff;
+  --destructive: #f05252;
+  --success-foreground: #4fd6b4;
+  --inverse: #e9ecf3;
+  --inverse-foreground: #121827;
+  --inverse-muted: rgb(18 24 39 / 0.68);
+  --band: #080b12;
+  --band-foreground: #eef0f5;
+  --band-muted: #98a1b3;
+  --band-line: #1d2536;
+  --night: #f4f5f8;
+  --night-line: #dde1e8;
+  --night-block: #ffffff;
+  --night-text: #1b2233;
+  --night-muted: #5d6476;
+  --night-tile: #1b2233;
+  --night-edge: #b8bfcc;
+  --night-pulse: #3355ff;
+  --night-skip: #b8bfcc;
+  --night-shadow: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success-foreground: var(--success-foreground);
+  --color-inverse: var(--inverse);
+  --color-inverse-foreground: var(--inverse-foreground);
+  --color-inverse-muted: var(--inverse-muted);
+  --color-band: var(--band);
+  --color-band-foreground: var(--band-foreground);
+  --color-band-muted: var(--band-muted);
+  --color-band-line: var(--band-line);
+  --color-night: var(--night);
+  --color-night-line: var(--night-line);
+  --color-ink: var(--brand-ink);
+  --color-cobalt: var(--brand-cobalt);
+  --color-mint: var(--brand-mint);
+  --color-amber: var(--brand-amber);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --font-sans: 'Schibsted Grotesk Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/*
+ * Unlayered on purpose: overrides the editor's global `body { overflow: hidden }`
+ * so normal pages scroll. The editor page sizes itself to the viewport instead.
+ */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow: auto;
+  font-feature-settings: 'ss01';
+}
+
+/*
+ * The editor's top bar shows a placeholder "Folder Name /" before the workflow
+ * name, which this app doesn't use. SDK 3.0 has no option for it, so it is
+ * hidden here. Remove this rule if you add folders.
+ */
+.editor-host [class*='_folder-name_'] {
+  display: none;
+}
+
+/*
+ * Longer help text in block settings (the "Label" form element) would stay on
+ * one line and push the panel wider than the screen. Let it wrap.
+ */
+.editor-host [class*='_accordion-content_'] [class*='_label_'] {
+  white-space: normal;
+  line-height: 1.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
